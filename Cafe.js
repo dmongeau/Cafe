@@ -9,7 +9,8 @@
  *
  *
  */
-var Cafe; if(!Cafe) Cafe = {};
+var Cafe;
+if(!Cafe){Cafe={};}else if(typeof(Cafe)=='object'&&!Cafe.init){Cafe._pendingControllers=Cafe;}
 if(!Cafe.path) Cafe.path = {};
 if(!Cafe.currentPath) Cafe.currentPath = null;
 if(!Cafe.controllers) Cafe.controllers = {};
@@ -25,10 +26,21 @@ Cafe.init = function(path, context, config) {
 		
 		if(!context) { context = document.body; }
 		
+		Cafe.bootstrap();
 		Cafe.route(path);
 		Cafe.run(context);
+		
 	});
 	
+	
+};
+
+Cafe.bootstrap = function() {
+	
+	//add pending controllers
+	for(var i = 0; i < Cafe._pendingControllers.length; i++) {
+		Cafe.push(Cafe._pendingControllers[i]);
+	}
 	
 };
 
