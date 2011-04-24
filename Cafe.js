@@ -40,6 +40,9 @@ Cafe.init = function(path, context, config) {
 
 Cafe.bootstrap = function() {
 	
+	//Bootstrap plugins
+	Cafe.bootstrapPlugins();
+	
 	//add pending controllers
 	for(var i = 0; i < Cafe._pendingControllers.length; i++) {
 		Cafe.push(Cafe._pendingControllers[i]);
@@ -135,8 +138,18 @@ Cafe.hasController = function(path) {
  * ---------------------------------------------------------- */
 
 
-Cafe.addPlugin = function(name, plugin) {
+Cafe.addPlugin = function(name, plugin, pending) {
+	if(!pending) pending = false;
 	Cafe.plugins[name] = plugin;
+};
+
+Cafe.bootstrapPlugins = function() {
+	for(name in Cafe.plugins) {
+		var plugin = Cafe.plugins[name];
+		if(plugin.bootstrap && typeof(plugin.bootstrap) == 'function'){
+			plugin.bootstrap.call(Cafe);
+		}
+	}
 };
 
 
