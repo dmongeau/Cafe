@@ -14,6 +14,7 @@ if(!Cafe){Cafe={};}else if(typeof(Cafe)=='object'&&!Cafe.init){Cafe._pendingCont
 if(!Cafe.path) Cafe.path = {};
 if(!Cafe.currentPath) Cafe.currentPath = null;
 if(!Cafe.controllers) Cafe.controllers = {};
+if(!Cafe.plugins) Cafe.plugins = {};
 
 /*
  *
@@ -21,6 +22,8 @@ if(!Cafe.controllers) Cafe.controllers = {};
  *
  */
 Cafe.init = function(path, context, config) {
+
+	if(!path) path = window.location.href;
 	
 	Cafe.DOMReady.add(function (){
 		
@@ -78,6 +81,14 @@ Cafe.run = function(context) {
 	
 };
 
+
+/* ----------------------------------------------------------
+ *
+ *							Controllers
+ *
+ * ---------------------------------------------------------- */
+
+
 /*
  *
  * Push controllers to cafe
@@ -115,6 +126,26 @@ Cafe.hasController = function(path) {
 	return !Cafe.controllers[path.toLowerCase()] ? false:true;
 	
 };
+
+
+/* ----------------------------------------------------------
+ *
+ *							Plugins
+ *
+ * ---------------------------------------------------------- */
+
+
+Cafe.addPlugin = function(name, plugin) {
+	Cafe.plugins[name] = plugin;
+};
+
+
+/* ----------------------------------------------------------
+ *
+ *							Utilities
+ *
+ * ---------------------------------------------------------- */
+
 
 /*
  *
