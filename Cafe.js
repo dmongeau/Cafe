@@ -10,7 +10,8 @@
  *
  */
 var Cafe;
-if(!Cafe){Cafe={};}else if(typeof(Cafe)=='object'&&!Cafe.init){Cafe._pendingControllers=Cafe;}
+if(!Cafe){Cafe={};}
+else if(typeof(Cafe)=='object'&&!Cafe.init){Cafe._pendingControllers=Cafe;}
 if(!Cafe.path) Cafe.path = {};
 if(!Cafe.currentPath) Cafe.currentPath = null;
 if(!Cafe.controllers) Cafe.controllers = {};
@@ -56,6 +57,7 @@ Cafe.bootstrap = function() {
  *
  */
 Cafe.route = function(path) {
+	
 	if(typeof(path) == 'string') {
 		var parts = Cafe.trim(path,'/').toLowerCase().split('/');
 		if(!parts || !parts.length){return false;}
@@ -87,7 +89,7 @@ Cafe.run = function(context) {
 
 /* ----------------------------------------------------------
  *
- *							Controllers
+ *                      Controllers
  *
  * ---------------------------------------------------------- */
 
@@ -133,7 +135,7 @@ Cafe.hasController = function(path) {
 
 /* ----------------------------------------------------------
  *
- *							Plugins
+ *                         Plugins
  *
  * ---------------------------------------------------------- */
 
@@ -155,7 +157,7 @@ Cafe.bootstrapPlugins = function() {
 
 /* ----------------------------------------------------------
  *
- *							Utilities
+ *                         Utilities
  *
  * ---------------------------------------------------------- */
 
