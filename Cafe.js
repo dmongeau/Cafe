@@ -145,7 +145,24 @@ Cafe.extend = function(obj1,obj2) {
 	return obj1;
 };
 
-
+/*
+ *
+ * Load external javscript file with callback
+ *
+ */
+Cafe.loadScript = function (url, callback) {
+	var head = document.getElementsByTagName('head')[0];
+	var script = document.createElement('script');
+	script.type = 'text/javascript';
+	script.src = url;
+	if (callback) {
+		script.onreadystatechange = function () {
+			if (this.readyState == 'loaded') callback();
+		}
+		script.onload = callback;
+	}
+	head.appendChild(script);
+};
 
 // http://kevin.vanzonneveld.net
 // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)

@@ -8,28 +8,18 @@
     
         var Cafe = Cafe || [];
         Cafe.push({
-            
-            'default' : function() {
+            'default' : function($el) {
                 
-                alert('a');
-                
-            },
-            
-            '/jesus/bar' : function() {
-                
-                alert('b');
+				
                 
             }
-            
         });
         Cafe.push({
-            
-            '/jesus/bar/tendre' : function() {
+            '/jesus/bar/tendre.html' : function($el) {
                 
                 alert('c');
                 
             }
-            
         });
         
         
@@ -37,7 +27,7 @@
     
     <script type="text/javascript" src="Cafe.js"></script>
     <script type="text/javascript">
-        Cafe.init('/jesus/bar/tendre');
+        Cafe.init('jesus/bar/tendre.html');
     </script>
 
 </head>
