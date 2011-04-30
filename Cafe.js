@@ -14,6 +14,7 @@ if(!Cafe){Cafe={};}else if(typeof(Cafe)=='object'&&!Cafe.init){Cafe._pendingCont
 if(!Cafe.path) Cafe.path = {};
 if(!Cafe.currentPath) Cafe.currentPath = null;
 if(!Cafe.controllers) Cafe.controllers = {};
+if(!Cafe.plugins) Cafe.plugins = {};
 
 /*
  *
@@ -21,6 +22,8 @@ if(!Cafe.controllers) Cafe.controllers = {};
  *
  */
 Cafe.init = function(path, context, config) {
+
+	if(!path) path = window.location.href;
 	
 	Cafe.DOMReady.add(function (){
 		
@@ -36,6 +39,9 @@ Cafe.init = function(path, context, config) {
 };
 
 Cafe.bootstrap = function() {
+	
+	//Bootstrap plugins
+	Cafe.bootstrapPlugins();
 	
 	//add pending controllers
 	for(var i = 0; i < Cafe._pendingControllers.length; i++) {
@@ -78,6 +84,14 @@ Cafe.run = function(context) {
 	
 };
 
+
+/* ----------------------------------------------------------
+ *
+ *							Controllers
+ *
+ * ---------------------------------------------------------- */
+
+
 /*
  *
  * Push controllers to cafe
@@ -115,6 +129,36 @@ Cafe.hasController = function(path) {
 	return !Cafe.controllers[path.toLowerCase()] ? false:true;
 	
 };
+
+
+/* ----------------------------------------------------------
+ *
+ *							Plugins
+ *
+ * ---------------------------------------------------------- */
+
+
+Cafe.addPlugin = function(name, plugin, pending) {
+	if(!pending) pending = false;
+	Cafe.plugins[name] = plugin;
+};
+
+Cafe.bootstrapPlugins = function() {
+	for(name in Cafe.plugins) {
+		var plugin = Cafe.plugins[name];
+		if(plugin.bootstrap && typeof(plugin.bootstrap) == 'function'){
+			plugin.bootstrap.call(Cafe);
+		}
+	}
+};
+
+
+/* ----------------------------------------------------------
+ *
+ *							Utilities
+ *
+ * ---------------------------------------------------------- */
+
 
 /*
  *
