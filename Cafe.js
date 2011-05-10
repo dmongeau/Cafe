@@ -15,6 +15,7 @@ else if(typeof(Cafe)=='object'&&!Cafe.init){Cafe._pendingControllers=Cafe;}
 if(!Cafe.path) Cafe.path = {};
 if(!Cafe.currentPath) Cafe.currentPath = null;
 if(!Cafe.controllers) Cafe.controllers = {};
+if(!Cafe.bootstraps) Cafe.bootstraps = [];
 if(!Cafe.plugins) Cafe.plugins = {};
 
 /*
@@ -25,29 +26,36 @@ if(!Cafe.plugins) Cafe.plugins = {};
 Cafe.init = function(path, context, config) {
 
 	if(!path) path = window.location.href;
+	if(!context) context = document.body;
 	
-	Cafe.DOMReady.add(function (){
-		
-		if(!context) { context = document.body; }
-		
-		Cafe.bootstrap();
+	function _init() {
+		Cafe.bootstrap(context);
 		Cafe.route(path);
 		Cafe.run(context);
-		
-	});
+	}
+	
+	if(Cafe.hasjQuery()) {
+		jQuery(_init);
+	} else {
+		Cafe.DOMReady.add(_init);
+	}
 	
 	
 };
 
-Cafe.bootstrap = function() {
+Cafe.bootstrap = function(context) {
 	
 	//Bootstrap plugins
 	Cafe.bootstrapPlugins();
 	
 	//add pending controllers
-	for(var i = 0; i < Cafe._pendingControllers.length; i++) {
-		Cafe.push(Cafe._pendingControllers[i]);
+	if(Cafe._pendingControllers) {
+		for(var i = 0; i < Cafe._pendingControllers.length; i++) {
+			Cafe.push(Cafe._pendingControllers[i]);
+		}
 	}
+	
+	Cafe.bootstrapControllers(context);
 	
 };
 
@@ -103,7 +111,26 @@ Cafe.push = function(controllers) {
 	
 	for (var name in controllers) {
 		controller = Cafe.trim(name,'/').toLowerCase();
-		Cafe.controllers[controller] = controllers[name];
+		if(name == 'bootstrap') {
+			Cafe.bootstraps.push(controllers[name]);
+		} else {
+			Cafe.controllers[controller] = controllers[name];
+		}
+	}
+	
+};
+
+/*
+ *
+ * Run bootstrap controllers
+ *
+ */
+Cafe.bootstrapControllers = function(context) {
+	
+	if(Cafe.bootstraps) {
+		for(var i = 0; i < Cafe.bootstraps.length; i++) {
+			Cafe.bootstraps[i].call(Cafe, context);
+		}
 	}
 	
 };
