@@ -25,7 +25,7 @@ if(!Cafe.plugins) Cafe.plugins = {};
  */
 Cafe.init = function(path, context, config) {
 
-	if(!path) path = window.location.href;
+	if(!path || !path.length) path = window.location.href;
 	if(!context) context = document.body;
 	
 	function _init() {
