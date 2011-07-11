@@ -17,6 +17,7 @@ if(!Cafe.currentPath) Cafe.currentPath = null;
 if(!Cafe.controllers) Cafe.controllers = {};
 if(!Cafe.bootstraps) Cafe.bootstraps = [];
 if(!Cafe.plugins) Cafe.plugins = {};
+if(!Cafe.bootstraped) Cafe.bootstraped = false;
 
 /*
  *
@@ -45,6 +46,8 @@ Cafe.init = function(path, context, config) {
 
 Cafe.bootstrap = function(context) {
 	
+	if(Cafe.bootstraped) return;
+	
 	//Bootstrap plugins
 	Cafe.bootstrapPlugins();
 	
@@ -56,6 +59,8 @@ Cafe.bootstrap = function(context) {
 	}
 	
 	Cafe.bootstrapControllers(context);
+	
+	Cafe.bootstraped = true;
 	
 };
 
